@@ -76,9 +76,6 @@ function Container() {
     localStorage.setItem('chatHistory', JSON.stringify(messages));
   };
 
-
-
-
   return (
     <Box
       sx={{
@@ -99,7 +96,7 @@ function Container() {
 
       <Box
         sx={{
-          height: "calc(90vh - 100px)",
+          height: "calc(90vh - 120px)",
           overflowY: "auto",
           scrollBehavior: "smooth",
           width: "inherit",
@@ -108,9 +105,9 @@ function Container() {
       >
         {messages.map((message) => (
           message.isSent ? (
-            <ChatMsgRight key={message.id} user="John" time="12:58" message={message.message} />
+            <ChatMsgRight key={message.id} user="You" time="12:58" message={message.message} />
           ) : (
-            <ChatMsgLeft key={message.id} user="BOT" time="12:45" message={message.message} />
+            <ChatMsgLeft key={message.id} user="Tharushika" time="12:45" message={message.message} />
           )
         ))}
       </Box>

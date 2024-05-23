@@ -1,10 +1,12 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
 
+
 function ChatMsgLeft(props) {
+  
   return (
     <Box
-      sx={{
+      sx={{ 
         alignItems: "end",
         display: "flex",
         gap: 1,
@@ -12,7 +14,10 @@ function ChatMsgLeft(props) {
         width: "50%",
       }}
     >
-      <Avatar />
+
+      
+      <Avatar alt="Tharushika Dilmini"  src="assets/online-support-icon.png" />
+
 
       <Box
         sx={{

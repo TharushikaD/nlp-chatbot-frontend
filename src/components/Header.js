@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
 import ChatBubble from "@mui/icons-material/ChatBubble";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -13,7 +13,7 @@ function Header() {
         borderColor: "#dedfe1",
         color: "#434C4C",
         display: "flex",
-        height: "2.5rem",
+        height: "3.5rem",
         justifyContent: "space-between",
         padding: "0.5rem",
         position: "absolute",
@@ -26,11 +26,11 @@ function Header() {
           alignItems: "center",
           display: "flex",
           gap: 1,
-          width: "25%",
+          width: "65%",
         }}
       >
-        <ChatBubble fontSize="small" />
-        <Typography>SimpleChat</Typography>
+        <Avatar alt="ESOFT Metro Campus" src="assets/esoft-logo.png" />
+        <Typography>ESOFT Metro Campus</Typography>
       </Box>
       <SettingsIcon fontSize="small" />
     </Box>
