@@ -1,6 +1,5 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
-import ChatBubble from "@mui/icons-material/ChatBubble";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 function Header() {
