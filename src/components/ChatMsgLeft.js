@@ -45,8 +45,8 @@ function ChatMsgLeft(props) {
           sx={{
             marginTop: 0.5,
           }}
+          dangerouslySetInnerHTML={{ __html: props.message }}
         >
-          {props.message}
         </Typography>
       </Box>
     </Box>
