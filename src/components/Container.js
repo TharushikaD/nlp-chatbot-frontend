@@ -76,6 +76,12 @@ function Container() {
     localStorage.setItem('chatHistory', JSON.stringify(messages));
   };
 
+  const submitByEnter = (e, callback) => {
+    if (e.key === 'Enter') {
+      callback(e);
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -134,6 +140,7 @@ function Container() {
           variant="outlined"
           size="small"
           onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={(e) => {submitByEnter(e, handleSendMessage)}}
           value={newMessage}
           sx={{
             bgcolor: "#dedfe1",

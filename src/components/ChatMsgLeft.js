@@ -14,11 +14,7 @@ function ChatMsgLeft(props) {
         width: "50%",
       }}
     >
-
-      
       <Avatar alt="Tharushika Dilmini"  src="assets/online-support-icon.png" />
-
-
       <Box
         sx={{
           borderRadius: "10px 10px 10px 0",
