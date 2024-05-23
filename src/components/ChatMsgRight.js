@@ -12,6 +12,7 @@ function ChatMsgRight(props) {
         gap: 1,
         padding: 1,
         width: "50%",
+        marginLeft: "50%",
       }}
     >
       <Avatar />

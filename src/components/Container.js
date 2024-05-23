@@ -1,5 +1,5 @@
 import { Box, Button, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import ChatMsgLeft from "./ChatMsgLeft";
 import ChatMsgRight from "./ChatMsgRight";
@@ -8,24 +8,32 @@ import ChatMsgRight from "./ChatMsgRight";
 function Container() {
 
   const bgImage = "/assets/chat-bg.png";
-  
+
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const messagesRef = useRef(null);
+
   useEffect(() => {
     const storedMessages = localStorage.getItem('chatHistory');
 
 
-    console.log('useEffect called:', storedMessages )
+    console.log('useEffect called:', storedMessages)
 
 
-    
+
     if (storedMessages) {
       setMessages(JSON.parse(storedMessages));
     }
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    }, 100);
+  }, [messages]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -35,6 +43,13 @@ function Container() {
     setIsLoading(true);
     setError(null);
 
+    setMessages([
+      ...messages,
+      { id: Date.now(), message: newMessage, isSent: true }
+    ]);
+    setNewMessage('');
+
+
     try {
       const response = await fetch('http://localhost:8000/chat/' + newMessage);
 
@@ -43,13 +58,15 @@ function Container() {
       }
 
       const responseData = await response.json();
-      // Update state with both sent and received messages
       setMessages([
         ...messages,
-        { id: Date.now(), message: newMessage, isSent: true }, // Sent message
-        { id: Date.now() + 1, message: responseData.message, isSent: false }, // Received message
+        { id: Date.now(), message: newMessage, isSent: true },
+        { id: Date.now() + 1, message: responseData.message, isSent: false }
       ]);
-      setNewMessage('');
+      
+      // Scroll to the bottom of the chat
+     
+
     } catch (err) {
       setError(err.message);
     } finally {
@@ -60,11 +77,13 @@ function Container() {
   };
 
 
+
+
   return (
     <Box
       sx={{
         width: 864,
-        height: 378,
+        height: "90vh",
         backgroundImage: `url(${bgImage})`,
         border: 2,
         borderColor: "#dedfe1",
@@ -77,49 +96,62 @@ function Container() {
       }}
     >
       <Header />
-      {messages.map((message) => (
+
+      <Box
+        sx={{
+          height: "calc(90vh - 100px)",
+          overflowY: "auto",
+          scrollBehavior: "smooth",
+          width: "inherit",
+        }}
+        ref={messagesRef}
+      >
+        {messages.map((message) => (
           message.isSent ? (
-            <ChatMsgRight key={message.id}  user="John" time="12:58" message={message.message} />
+            <ChatMsgRight key={message.id} user="John" time="12:58" message={message.message} />
           ) : (
             <ChatMsgLeft key={message.id} user="BOT" time="12:45" message={message.message} />
           )
-      ))}
+        ))}
+      </Box>
+
+
       <Box
-      sx={{
-        alignItems: "center",
-        alignSelf: "end",
-        bgcolor: "#F4F5F5",
-        borderTop: 2,
-        borderColor: "#dedfe1",
-        color: "#434C4C",
-        display: "flex",
-        gap: 1,
-        height: 62,
-        padding: "0.5rem",
-        width: "100%",
-      }}
-    >
-      <TextField
-        id="margin-none"
-        placeholder="Enter your message..."
-        variant="outlined"
-        size="small"
-        onChange={(e) => setNewMessage(e.target.value)}
-        value={newMessage}
         sx={{
-          bgcolor: "#dedfe1",
-          borderColor: "#BDBDBD",
-          borderRadius: 1,
-          color: "#d4d9d9",
+          alignItems: "center",
+          alignSelf: "end",
+          bgcolor: "#F4F5F5",
+          borderTop: 2,
+          borderColor: "#dedfe1",
+          color: "#434C4C",
+          display: "flex",
+          gap: 1,
+          height: 62,
+          padding: "0.5rem",
           width: "100%",
         }}
-      />
-      <Button variant="contained" color="success" onClick={handleSendMessage}>
-        Send
-      </Button>
-    </Box>
+      >
+        <TextField
+          id="margin-none"
+          placeholder="Enter your message..."
+          variant="outlined"
+          size="small"
+          onChange={(e) => setNewMessage(e.target.value)}
+          value={newMessage}
+          sx={{
+            bgcolor: "#dedfe1",
+            borderColor: "#BDBDBD",
+            borderRadius: 1,
+            color: "#d4d9d9",
+            width: "100%",
+          }}
+        />
+        <Button variant="contained" color="success" onClick={handleSendMessage}>
+          Send
+        </Button>
+      </Box>
 
-      
+
     </Box>
   );
 }
