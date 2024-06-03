@@ -7,7 +7,7 @@ import ChatMsgRight from "./ChatMsgRight";
 
 function Container() {
 
-  const bgImage = "/assets/chat-bg.png";
+  const bgImage = "/assets/chat-bg.jpg";
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
