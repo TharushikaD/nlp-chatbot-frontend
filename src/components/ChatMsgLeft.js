@@ -1,12 +1,32 @@
-import { Avatar, Box, Typography } from "@mui/material";
-import React from "react";
+import { Avatar, Box, Link, Typography } from "@mui/material";
+import React, { useState, useEffect } from 'react';
 
 
 function ChatMsgLeft(props) {
-  
+
+  const [currentTime, setCurrentTime] = useState(null);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      setCurrentTime(`${hours}:${minutes}`);
+    };
+
+    updateTime();
+
+    const intervalId = setInterval(updateTime, 1000); // Update every second
+
+    // Cleanup function to avoid memory leaks
+    return () => clearInterval(intervalId);
+  }, []);
+
+
+
   return (
     <Box
-      sx={{ 
+      sx={{
         alignItems: "end",
         display: "flex",
         gap: 1,
@@ -14,7 +34,7 @@ function ChatMsgLeft(props) {
         width: "50%",
       }}
     >
-      <Avatar alt="Tharushika Dilmini"  src="assets/online-support-icon.png" />
+      <Avatar alt="Tharushika Dilmini" src="assets/online-support-icon.png" />
       <Box
         sx={{
           borderRadius: "10px 10px 10px 0",
@@ -37,7 +57,7 @@ function ChatMsgLeft(props) {
         >
           {props.user}
           <Typography component={"span"} fontSize={"small"}>
-            {props.time}
+            {currentTime}
           </Typography>
         </Typography>
 
@@ -45,9 +65,13 @@ function ChatMsgLeft(props) {
           sx={{
             marginTop: 0.5,
           }}
-          dangerouslySetInnerHTML={{ __html: props.message }}
         >
+          {props.message}
         </Typography>
+        {props.urls && props.urls.map((url) => (
+          <Link href={url} underline="none" target="_blank" rel="noopener noreferrer">{url}</Link>
+        ))}
+
       </Box>
     </Box>
   );

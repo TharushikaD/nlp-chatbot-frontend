@@ -18,12 +18,6 @@ function Container() {
 
   useEffect(() => {
     const storedMessages = localStorage.getItem('chatHistory');
-
-
-    console.log('useEffect called:', storedMessages)
-
-
-
     if (storedMessages) {
       setMessages(JSON.parse(storedMessages));
     }
@@ -58,15 +52,12 @@ function Container() {
       }
 
       const responseData = await response.json();
+
       setMessages([
         ...messages,
         { id: Date.now(), message: newMessage, isSent: true },
-        { id: Date.now() + 1, message: responseData.message, isSent: false }
+        { id: Date.now() + 1, message: responseData.response_text, urls: responseData.response_links, isSent: false }
       ]);
-      
-      // Scroll to the bottom of the chat
-     
-
     } catch (err) {
       setError(err.message);
     } finally {
@@ -113,7 +104,7 @@ function Container() {
           message.isSent ? (
             <ChatMsgRight key={message.id} user="You" time="12:58" message={message.message} />
           ) : (
-            <ChatMsgLeft key={message.id} user="Tharushika" time="12:45" message={message.message} />
+            <ChatMsgLeft key={message.id} user="Assistant" time="12:45" message={message.message} urls={message.urls} />
           )
         ))}
       </Box>
@@ -140,7 +131,7 @@ function Container() {
           variant="outlined"
           size="small"
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => {submitByEnter(e, handleSendMessage)}}
+          onKeyDown={(e) => { submitByEnter(e, handleSendMessage) }}
           value={newMessage}
           sx={{
             bgcolor: "#dedfe1",

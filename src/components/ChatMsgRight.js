@@ -1,7 +1,26 @@
 import { Avatar, Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from 'react';
 
 function ChatMsgRight(props) {
+
+  const [currentTime, setCurrentTime] = useState(null);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      setCurrentTime(`${hours}:${minutes}`);
+    };
+
+    updateTime();
+
+    const intervalId = setInterval(updateTime, 1000); // Update every second
+
+    // Cleanup function to avoid memory leaks
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <Box
       sx={{
@@ -39,7 +58,7 @@ function ChatMsgRight(props) {
         >
           {props.user}
           <Typography component={"span"} fontSize={"small"}>
-            {props.time}
+            {currentTime}
           </Typography>
         </Typography>
 
